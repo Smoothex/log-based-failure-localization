@@ -1,6 +1,12 @@
 import os
 import subprocess
 
+"""
+CASSANDRA-16577
+https://issues.apache.org/jira/browse/CASSANDRA-16577?jql=project%20%3D%20CASSANDRA%20AND%20issuetype%20%3D%20Bug%20AND%20status%20%3D%20Resolved%20AND%20fixVersion%20%3D%203.11.11
+"""
+
+
 # 3.11.11 - normal
 # os.system('ccm create test_python_normal --vnodes -n 3 -s -v 3.11.11')
 
