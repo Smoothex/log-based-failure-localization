@@ -3,7 +3,7 @@ debugLogNormal = "/home/smoothex/Desktop/test_python_normal/debug.log"
 
 import re
 
-with open(debugLogFailure, 'r+') as fp:
+with open(debugLogNormal, 'r+') as fp:
     log = fp.read()
     # 2022-07-14 17:24:51,916
     date_regex = r'\d{4}\-\d{2}\-\d{2}\s+\d{1,2}\:\d{1,2}\:\d{1,2}\,\d{3}'
@@ -17,8 +17,11 @@ with open(debugLogFailure, 'r+') as fp:
     # token 7380111211969652565
     tokenID_regex = r'token\s+(-?)\d{1,20}'
 
-    # Got local ranges [(1784141832831967637,1814758406832185510], (3758994068070487793,3775166499811927842], .....]
-    localRanges_regex = r'Got local ranges \[.*\]'
+    # ranges [(1784141832831967637,1814758406832185510], (3758994068070487793,3775166499811927842], .....]
+    localRanges_regex = r'ranges \[.*\]'
+
+    # Ranges needing transfer are [(...], (...],...]
+    needingTransfer_regex = r'needing transfer are \[.*\]'
 
     # 5.677KiB
     KiB_regex = r'\d{1,4}\.\d{1,4}KiB'
@@ -141,6 +144,9 @@ with open(debugLogFailure, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=internalResponseStage_regex,
                  repl="InternalResponseStage:<NUM>",
+                 string=log)
+    log = re.sub(pattern=needingTransfer_regex,
+                 repl="needing transfer are <TOKEN_RANGES>",
                  string=log)
     fp.seek(0)
     fp.write(log)
