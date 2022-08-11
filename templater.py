@@ -76,6 +76,29 @@ with open(debugLogNormal, 'r+') as fp:
     # InternalResponseStage:2
     internalResponseStage_regex = r'InternalResponseStage:\d'
 
+    # Using Netty Version: [...]
+    nettyVersion_regex = r'Netty Version\: \[.*\]'
+
+    # Range (6847199561877748027,6877733767749234154] already in all replicas
+    rangeAlreadyInAllReplicas_regex = r'Range \((-?)[0-9]+\,(-?)[0-9]+\] already'
+
+    # Range (-1542563990710368884,-1513591220337879440] will be responsibility
+    rangeResponsibility_regex = r'Range \((-?)[0-9]+\,(-?)[0-9]+\] will be responsibility'
+
+    # [Stream #6d5662c0-0c23-11ed-8cad-4304f9841101]
+    streamID_regex = r'\[Stream #[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+'
+
+    # ____-37f71aca7dc2383ba70672528af04d4f/
+    peers_regex = r'peers-[a-z0-9]+'
+    droppedColumns_regex = r'\/dropped_columns-[a-z0-9]+'
+    local_regex = r'\/local-[a-z0-9]+'
+    sstableActivity_regex = r'\/sstable_activity-[a-z0-9]+'
+    sizeEstimates_regex = r'\/size_estimates-[a-z0-9]+'
+    transferredRanges_regex = r'\/transferred_ranges-[a-z0-9]+'
+
+    # Setting tokens to [...]
+    settingTokens_regex = r'Setting tokens to \[.*\]'
+
     log = re.sub(pattern=date_regex,
                  repl="<DATE>",
                  string=log)
@@ -125,7 +148,7 @@ with open(debugLogNormal, 'r+') as fp:
                  repl="at <ID> with",
                  string=log)
     log = re.sub(pattern=db_regex,
-                 repl="<DB>",
+                 repl="<.db FILE>",
                  string=log)
     log = re.sub(pattern=compacting_regex,
                  repl="Compacting (<ID>)",
@@ -148,6 +171,40 @@ with open(debugLogNormal, 'r+') as fp:
     log = re.sub(pattern=needingTransfer_regex,
                  repl="needing transfer are <TOKEN_RANGES>",
                  string=log)
+    log = re.sub(pattern=nettyVersion_regex,
+                 repl="Netty Version: <NETTY_VERSIONS>",
+                 string=log)
+    log = re.sub(pattern=rangeAlreadyInAllReplicas_regex,
+                 repl="Range <TOKEN_RANGE> already",
+                 string=log)
+    log = re.sub(pattern=rangeResponsibility_regex,
+                 repl="Range <TOKEN_RANGE> will be responsibility",
+                 string=log)
+    log = re.sub(pattern=streamID_regex,
+                 repl="[Stream <STREAM_ID>",
+                 string=log)
+    log = re.sub(pattern=peers_regex,
+                 repl="peers-<ID>",
+                 string=log)
+    log = re.sub(pattern=droppedColumns_regex,
+                 repl="/dropped_columns-<ID>",
+                 string=log)
+    log = re.sub(pattern=local_regex,
+                 repl="/local-<ID>",
+                 string=log)
+    log = re.sub(pattern=sstableActivity_regex,
+                 repl="/sstable_activity-<ID>",
+                 string=log)
+    log = re.sub(pattern=sizeEstimates_regex,
+                 repl="/size_estimates-<ID>",
+                 string=log)
+    log = re.sub(pattern=settingTokens_regex,
+                 repl="Setting tokens to [<TOKEN_IDs>]",
+                 string=log)
+    log = re.sub(pattern=transferredRanges_regex,
+                 repl="/transferred_ranges-<ID>",
+                 string=log)
+
     fp.seek(0)
     fp.write(log)
     fp.truncate()
