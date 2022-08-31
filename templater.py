@@ -3,7 +3,7 @@ debugLogNormal = "/home/smoothex/Desktop/test_python_normal/debug.log"
 
 import re
 
-with open(debugLogNormal, 'r+') as fp:
+with open(debugLogFailure, 'r+') as fp:
     log = fp.read()
     # 2022-07-14 17:24:51,916
     date_regex = r'\d{4}\-\d{2}\-\d{2}\s+\d{1,2}\:\d{1,2}\:\d{1,2}\,\d{3}'
@@ -98,6 +98,15 @@ with open(debugLogNormal, 'r+') as fp:
 
     # Setting tokens to [...]
     settingTokens_regex = r'Setting tokens to \[.*\]'
+
+    # Hostname: ...
+    hostname_regex = r'Hostname: .*'
+
+    # apache-cassandra-3.11.11.jar:3.11.11
+    cassandraVersion_regex = r'apache-cassandra-[0-9]*.[0-9]*.[0-9]*.jar:[0-9]*.[0-9]*.[0-9]*'
+
+    # Cassandra version: 3.11.11
+    cassandraVersion_regexSecond = r'Cassandra version: [0-9]*.[0-9]*.[0-9]*'
 
     log = re.sub(pattern=date_regex,
                  repl="<DATE>",
@@ -203,6 +212,15 @@ with open(debugLogNormal, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=transferredRanges_regex,
                  repl="/transferred_ranges-<ID>",
+                 string=log)
+    log = re.sub(pattern=hostname_regex,
+                 repl="Hostname: <HOSTNAME>",
+                 string=log)
+    log = re.sub(pattern=cassandraVersion_regex,
+                 repl="apache-cassandra-<VERSION>.jar:<VERSION>",
+                 string=log)
+    log = re.sub(pattern=cassandraVersion_regexSecond,
+                 repl="Cassandra version: <VERSION>",
                  string=log)
 
     fp.seek(0)
