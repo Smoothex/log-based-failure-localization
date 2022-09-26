@@ -1,9 +1,9 @@
-debugLogFailure = "/home/smoothex/Desktop/test_python_failure/debug.log"
-debugLogNormal = "/home/smoothex/Desktop/test_python_normal/debug.log"
+debugLogFailure = "/home/smoothex/Desktop/13337_failure/debug.log"
+debugLogNormal = "/home/smoothex/Desktop/13337_normal/debug.log"
 
 import re
 
-with open(debugLogFailure, 'r+') as fp:
+with open(debugLogNormal, 'r+') as fp:
     log = fp.read()
     # 2022-07-14 17:24:51,916
     date_regex = r'\d{4}\-\d{2}\-\d{2}\s+\d{1,2}\:\d{1,2}\:\d{1,2}\,\d{3}'
@@ -61,7 +61,7 @@ with open(debugLogFailure, 'r+') as fp:
     db_regex = r'm(e|d)-[0-9]+-big(-Data.db)?'
 
     # Compacting (3e27ae50-0c23-11ed-8cad-4304f9841101)
-    compacting_regex = r'Compacting \([a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\)'
+    compacting_regex = r'Compacting \([a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\) \[.*/mc'
     compacted_regex = r'Compacted \([a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\)'
 
     # in 59ms
@@ -103,10 +103,31 @@ with open(debugLogFailure, 'r+') as fp:
     hostname_regex = r'Hostname: .*'
 
     # apache-cassandra-3.11.11.jar:3.11.11
-    cassandraVersion_regex = r'apache-cassandra-[0-9]*.[0-9]*.[0-9]*.jar:[0-9]*.[0-9]*.[0-9]*'
+    cassandraVersion_regex = r'apache-cassandra-[0-9]*\.[0-9]*\.[0-9]*\.jar:[0-9]*\.[0-9]*\.[0-9]*'
 
     # Cassandra version: 3.11.11
-    cassandraVersion_regexSecond = r'Cassandra version: [0-9]*.[0-9]*.[0-9]*'
+    cassandraVersion_regexSecond = r'Cassandra version: [0-9]*\.[0-9]*\.[0-9]*'
+
+    # JVM Arguments: [...]
+    jvmArguments_regex = r'JVM Arguments\: \[.*\]'
+
+    # /home/smoothex/.ccm/
+    user_regex = r'/home/.*/.ccm/'
+
+    # Enqueuing flush of columns: 351 (0%) on-heap, 0 (0%) off-heap
+    onHeapOffHeap_regex = r'\: [0-9]* \([0-9]*%\) on-heap, [0-9]* \([0-9]*%\) off-heap'
+
+    # 326 bytes to 239 (~72% of original)
+    compaction_regex = r'(([0-9]*?\,)?)[0-9]* bytes to (([0-9]*?\,)?)[0-9]* \(\~[0-9]*% of original\)'
+
+    # 0.003999MB/s.
+    speed_regex = r'[0-9]*\.[0-9]*MB/s\.'
+
+    # sstables to [...] to level=
+    compactedSSTablesTo_regex = r'sstables to \[.*\] to level='
+
+    # Completed flushing /home/<USER>/.ccm/13337_failure/node1/data0/system_schema/columns-24101c25a2ae3af787c1b40ee1aca33f/mc
+    completedFlushing_regex = r'Completed flushing .*/mc'
 
     log = re.sub(pattern=date_regex,
                  repl="<DATE>",
@@ -160,7 +181,7 @@ with open(debugLogFailure, 'r+') as fp:
                  repl="<.db FILE>",
                  string=log)
     log = re.sub(pattern=compacting_regex,
-                 repl="Compacting (<ID>)",
+                 repl="Compacting (<ID>) [<PATH>/mc",
                  string=log)
     log = re.sub(pattern=compacted_regex,
                  repl="Compacted (<ID>)",
@@ -221,6 +242,27 @@ with open(debugLogFailure, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=cassandraVersion_regexSecond,
                  repl="Cassandra version: <VERSION>",
+                 string=log)
+    log = re.sub(pattern=jvmArguments_regex,
+                 repl="JVM Arguments: [<JVM_ARGS>]",
+                 string=log)
+    log = re.sub(pattern=user_regex,
+                 repl="/home/<USER>/.ccm/",
+                 string=log)
+    log = re.sub(pattern=compaction_regex,
+                 repl="<NUM> bytes to <NUM> (~<NUM>% of original)",
+                 string=log)
+    log = re.sub(pattern=speed_regex,
+                 repl="<NUM>MB/s.",
+                 string=log)
+    log = re.sub(pattern=compactedSSTablesTo_regex,
+                 repl="sstables to [<PATH>] to level=",
+                 string=log)
+    log = re.sub(pattern=completedFlushing_regex,
+                 repl="Completed flushing <PATH>/mc",
+                 string=log)
+    log = re.sub(pattern=onHeapOffHeap_regex,
+                 repl=": <NUM> (<NUM>%) on-heap, <NUM> (<NUM>%) off-heap",
                  string=log)
 
     fp.seek(0)

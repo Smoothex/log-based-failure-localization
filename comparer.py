@@ -1,8 +1,8 @@
 import difflib
 from difflib import HtmlDiff
 
-debugLogFailure = open("/home/smoothex/Desktop/test_python_failure/debug.log").readlines()
-debugLogNormal = open("/home/smoothex/Desktop/test_python_normal/debug.log").readlines()
+debugLogFailure = open("/home/smoothex/Desktop/16577_failure/debug.log").readlines()
+debugLogNormal = open("/home/smoothex/Desktop/16577_normal/debug.log").readlines()
 
 delta = difflib.Differ().compare(debugLogNormal, debugLogFailure)
 
