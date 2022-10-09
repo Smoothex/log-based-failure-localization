@@ -31,3 +31,6 @@ subprocess.run(allocate, shell=True)
 # Add node2 again to cluster
 os.system('ccm add node2 -i 127.0.0.2 -j 7200 -r 2200')
 os.system('ccm node2 start')
+
+# Stop the cluster
+os.system("ccm stop")

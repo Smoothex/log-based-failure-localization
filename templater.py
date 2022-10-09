@@ -1,5 +1,5 @@
-debugLogFailure = "/home/smoothex/Desktop/13337_failure/debug.log"
-debugLogNormal = "/home/smoothex/Desktop/13337_normal/debug.log"
+debugLogFailure = "/home/smoothex/Desktop/13346_failure/debug.log"
+debugLogNormal = "/home/smoothex/Desktop/13346_normal/debug.log"
 
 import re
 
@@ -114,8 +114,10 @@ with open(debugLogNormal, 'r+') as fp:
     # /home/smoothex/.ccm/
     user_regex = r'/home/.*/.ccm/'
 
-    # Enqueuing flush of columns: 351 (0%) on-heap, 0 (0%) off-heap
-    onHeapOffHeap_regex = r'\: [0-9]* \([0-9]*%\) on-heap, [0-9]* \([0-9]*%\) off-heap'
+    # : 1.616KiB (0%) on-heap, 0.000KiB (0%) off-heap
+    # (0%) off-heap
+    onHeap_regex = r'\([0-9]*%\) on-heap'
+    offHeap_regex = r'\([0-9]*%\) off-heap'
 
     # 326 bytes to 239 (~72% of original)
     compaction_regex = r'(([0-9]*?\,)?)[0-9]* bytes to (([0-9]*?\,)?)[0-9]* \(\~[0-9]*% of original\)'
@@ -261,8 +263,11 @@ with open(debugLogNormal, 'r+') as fp:
     log = re.sub(pattern=completedFlushing_regex,
                  repl="Completed flushing <PATH>/mc",
                  string=log)
-    log = re.sub(pattern=onHeapOffHeap_regex,
-                 repl=": <NUM> (<NUM>%) on-heap, <NUM> (<NUM>%) off-heap",
+    log = re.sub(pattern=onHeap_regex,
+                 repl="(<NUM>%) on-heap",
+                 string=log)
+    log = re.sub(pattern=offHeap_regex,
+                 repl="(<NUM>%) off-heap",
                  string=log)
 
     fp.seek(0)

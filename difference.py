@@ -1,7 +1,7 @@
 import difflib
 
-debugLogFailure = open("/home/smoothex/Desktop/13337_failure/debug.log").readlines()
-debugLogNormal = open("/home/smoothex/Desktop/13337_normal/debug.log").readlines()
+debugLogFailure = open("/home/smoothex/Desktop/13346_failure/debug.log").readlines()
+debugLogNormal = open("/home/smoothex/Desktop/13346_normal/debug.log").readlines()
 
 diff = []
 
@@ -21,6 +21,6 @@ for normalLine in debugLogNormal:
 print("\n".join(diff))
 
 # save the differences to a file
-with open('difference-13337.txt', 'w') as file_out:
+with open('difference-13346.txt', 'w') as file_out:
     for line in diff:
         file_out.write(line)

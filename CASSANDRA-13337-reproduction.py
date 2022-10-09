@@ -13,7 +13,7 @@ https://issues.apache.org/jira/browse/CASSANDRA-13337
 # 3.0.13 - normal execution
 os.system('ccm create 13337_normal -v 3.0.13 -n 1 -s')
 
-# Connect to the cluster and specifically to the first node
+# Connect to the cluster and specifically to the first (and in this case only) node
 cluster = Cluster(['127.0.0.1'])
 session = cluster.connect()
 
@@ -33,3 +33,5 @@ session.execute("ALTER TABLE k.test DROP entry3;")
 session.execute("ALTER TABLE k.test DROP entry4;")
 session.execute("SELECT * FROM k.test;")
 
+# Stop the cluster
+os.system("ccm stop")
