@@ -2,13 +2,16 @@ import os
 import subprocess
 from cassandra.cluster import Cluster
 
+
 # 3.11.0 - normal execution
-os.system('ccm create 13346_normal -n 1 -v 3.11.0 -s')
+# 3.9 - gives error
+version = '3.11.0'
+execution = 'normal'  # alternatively 'failure'
 
 # DON'T FORGET TO STOP THE NORMAL CLUSTER AFTER RUNNING THE SCRIPT WITH IT SO THAT THE PORTS ARE FREE FOR THE NEXT ONE
 
-# 3.9 - gives error
-# os.system('ccm create 13346_failure -n 1 -v 3.9 -s')
+# Create a cluster called 13346_normal / 13346_failure and populate it with 1 node
+os.system('ccm create 13346_' + execution + ' -n 1 -v' + version + ' -s')
 
 # Connect to the cluster and specifically to the first (and in this case only) node
 cluster = Cluster(['127.0.0.1'])
