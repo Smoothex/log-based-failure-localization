@@ -10,7 +10,7 @@ https://issues.apache.org/jira/browse/CASSANDRA-11803
 
 user = os.getenv("USER", default=None)
 version = '3.3'
-execution = 'failure'  # alternatively 'failure'
+execution = 'failure'  # normal / failure
 container_name = 'cassandra' + version + '_' + execution
 
 # Run a Cassandra container and expose its port 9042 to the host's port 9042
@@ -51,4 +51,4 @@ except:
     pass
 
 # Write the Cassandra container logs to a file locally
-os.system('docker logs cassandra3.3_failure > /home/'+user+'/Desktop/TEST-11803_failure.log 2>&1')
+os.system('docker logs '+cassandra_container.name+' > /home/'+user+'/Desktop/11803_'+execution+'.log 2>&1')
