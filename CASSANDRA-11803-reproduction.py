@@ -9,20 +9,24 @@ https://issues.apache.org/jira/browse/CASSANDRA-11803
 """
 
 user = os.getenv("USER", default=None)
-version = '3.3'
+version = '3.3'        # fixed in 3.10
 execution = 'failure'  # normal / failure
 container_name = 'cassandra' + version + '_' + execution
 
-# Run a Cassandra container and expose its port 9042 to the host's port 9042
 client = docker.from_env()
+
+# Pull the image
+images = client.images.pull('cassandra', tag=version)
+
+# Run a Cassandra container and expose its port 9042 to the host's port 9042
 cassandra_container = client.containers.run(image='cassandra:' + version,
-                                            name='cassandra' + version + '_' + execution,
+                                            name='11803_' + execution,
                                             ports={'9042/tcp': ('127.0.0.1', 9042)},
                                             detach=True)
 
 print("Container created")
 print("Container name: " + cassandra_container.name)
-print("Container ID: " + cassandra_container.id)
+print("Container ID: " + cassandra_container.short_id)
 
 # Give the container some time to get fully initialized
 time.sleep(15)
