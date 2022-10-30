@@ -1,7 +1,9 @@
 import difflib
+import os
 
-debugLogFailure = open("/home/smoothex/Desktop/13346_failure/debug.log").readlines()
-debugLogNormal = open("/home/smoothex/Desktop/13346_normal/debug.log").readlines()
+user = os.getenv("USER", default=None)
+debugLogFailure = open("/home/"+user+"/Desktop/13346_failure/debug.log").readlines()
+debugLogNormal = open("/home/"+user+"/Desktop/13346_normal/debug.log").readlines()
 
 diff = []
 
