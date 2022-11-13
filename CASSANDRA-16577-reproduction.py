@@ -6,13 +6,13 @@ CASSANDRA-16577
 https://issues.apache.org/jira/browse/CASSANDRA-16577
 """
 
-# 3.11.11 - normal execution
-# os.system('ccm create 16577_normal --vnodes -n 3 -s -v 3.11.11')
+version = '3.11.10'  # 3.11.11 - normal execution / 3.11.10 - gives error
+execution = 'normal'  # alternatively 'failure'
 
 # DON'T FORGET TO STOP THE NORMAL CLUSTER AFTER RUNNING THE SCRIPT WITH IT SO THAT THE PORTS ARE FREE FOR THE NEXT ONE
 
-# 3.11.10 - gives error
-os.system('ccm create 16577_failure --vnodes -n 3 -s -v 3.11.10')
+# Start the container
+os.system('ccm create 16577_'+execution+' --vnodes -n 3 -s -v '+version)
 
 # Remove two nodes
 os.system('ccm node2 decommission')

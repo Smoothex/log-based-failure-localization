@@ -3,15 +3,15 @@ import subprocess
 from cassandra.cluster import Cluster
 
 """
-CASSANDRA-1337
+CASSANDRA-13337
 https://issues.apache.org/jira/browse/CASSANDRA-13337
 """
 
-# 3.0.12 - gives error
-# os.system('ccm create 13337_failure -v 3.0.12 -n 1 -s')
+version = '3.0.12'  # 3.0.13 - normal execution / 3.0.12 - gives error
+execution = 'normal'  # alternatively 'failure'
 
-# 3.0.13 - normal execution
-os.system('ccm create 13337_normal -v 3.0.13 -n 1 -s')
+# Start the container
+os.system('ccm create 13337_' + execution + ' -v ' + version + ' -n 1 -s')
 
 # Connect to the cluster and specifically to the first (and in this case only) node
 cluster = Cluster(['127.0.0.1'])

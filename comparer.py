@@ -3,8 +3,10 @@ from difflib import HtmlDiff
 import os
 
 user = os.getenv("USER", default=None)
-debugLogFailure = open("/home/"+user+"/Desktop/16577_failure/debug.log").readlines()
-debugLogNormal = open("/home/"+user+"/Desktop/16577_normal/debug.log").readlines()
+bug_number = '13346'  # or one of the other tickets
+
+debugLogFailure = open("/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log").readlines()
+debugLogNormal = open("/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log").readlines()
 
 delta = difflib.Differ().compare(debugLogNormal, debugLogFailure)
 

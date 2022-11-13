@@ -2,8 +2,10 @@ import difflib
 import os
 
 user = os.getenv("USER", default=None)
-debugLogFailure = open("/home/"+user+"/Desktop/13346_failure/debug.log").readlines()
-debugLogNormal = open("/home/"+user+"/Desktop/13346_normal/debug.log").readlines()
+bug_number = '13346'  # or one of the other tickets
+
+debugLogFailure = open("/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log").readlines()
+debugLogNormal = open("/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log").readlines()
 
 diff = []
 

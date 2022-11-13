@@ -1,7 +1,11 @@
-debugLogFailure = "/home/smoothex/Desktop/13346_failure/debug.log"
-debugLogNormal = "/home/smoothex/Desktop/13346_normal/debug.log"
-
 import re
+import os
+
+user = os.getenv("USER", default=None)
+bug_number = '13346'  # or one of the other tickets
+
+debugLogFailure = "/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log"
+debugLogNormal = "/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log"
 
 with open(debugLogNormal, 'r+') as fp:
     log = fp.read()
@@ -132,7 +136,7 @@ with open(debugLogNormal, 'r+') as fp:
     completedFlushing_regex = r'Completed flushing .*/mc'
 
     log = re.sub(pattern=date_regex,
-                 repl="<DATE>",
+                 repl="<TIMESTAMP>",
                  string=log)
     log = re.sub(pattern=clusterName_regex,
                  repl="<DIR>",

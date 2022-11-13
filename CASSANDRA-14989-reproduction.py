@@ -45,7 +45,7 @@ session.execute("INSERT INTO "
                 "k.reproduction(pk1,pk2) "
                 "VALUES (uuid(),\'pk2\');")
 try:
-    session.execute("SELECT token(pk1) FROM k.reproduction")
+    session.execute("SELECT TOKEN(pk1) FROM k.reproduction")
 except:
     pass
 
