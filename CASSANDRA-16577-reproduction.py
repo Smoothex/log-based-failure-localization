@@ -20,11 +20,11 @@ os.system('ccm node3 decommission')
 os.system('ccm node2 remove')
 os.system('ccm node3 remove')
 
-# Create keyspace to change the schema. It works if the schema never changes.
+# Create a keyspace
 cmd = "ccm node1 cqlsh -x \"CREATE KEYSPACE k WITH replication = {\'class\': \'SimpleStrategy\', \'replication_factor\': 1};\""
 subprocess.run(cmd, shell=True)
 
-# Add allocate parameter
+# Invoke a new assignment of tokens (since 2 nodes left the ring)
 allocate = "ccm updateconf \'allocate_tokens_for_keyspace: k\'"
 subprocess.run(allocate, shell=True)
 

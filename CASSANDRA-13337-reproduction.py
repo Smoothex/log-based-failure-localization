@@ -27,7 +27,6 @@ session.execute("CREATE TABLE k.test (key1 int, key2 int, entry1 int, entry2 int
 # Make some changes to the table
 session.execute("UPDATE k.test SET entry2 = 1, entry3 = 3, entry4 = 4 WHERE key1 = 1 AND key2 = 0;")
 
-
 session.execute("ALTER TABLE k.test DROP entry2;")
 session.execute("ALTER TABLE k.test DROP entry3;")
 session.execute("ALTER TABLE k.test DROP entry4;")
