@@ -9,13 +9,14 @@ https://issues.apache.org/jira/browse/CASSANDRA-14989
 """
 
 user = os.getenv("USER", default=None)
-version = '3.11.3'     # fixed in 4.0
-execution = 'failure'  # normal / failure
+version = '4.0'     # normal in 4.0 / bug in 3.11.14
+execution = 'normal'  # normal / failure
 container_name = 'cassandra' + version + '_' + execution
 
 client = docker.from_env()
 
-# Pull the image
+# Pull the image - if it throws an error, navigate to ~/.docker/config.json and change credsStore to credStore
+# https://stackoverflow.com/questions/67642620/docker-credential-desktop-not-installed-or-not-available-in-path
 images = client.images.pull('cassandra', tag=version)
 
 # Run the Cassandra container and expose its port 9042 to the host's port 9042
@@ -29,9 +30,17 @@ print("Container name: " + cassandra_container.name)
 print("Container ID: " + cassandra_container.short_id)
 
 # Give the container some time to get fully initialized
+# You might want to increase this time if you're getting a timeout error
 time.sleep(15)
 
 # Connect to the cluster inside the docker container
+"""
+Observation: the connection to the cluster is flaky. Sometimes it returns a timeout error, sometimes a
+             "Connection reset by peers" error. Upon multiple tries to connect, it finally does - I am unsure whether
+             the cluster needs more time to get fully initialized or something else. Worst case, you can create the
+             cluster (manually or with the code above), then comment out lines 16-34 and rerun the rest of the script
+             multiple times until a connection is established successfully.
+"""
 cluster = Cluster(['127.0.0.1'], port=9042)
 session = cluster.connect()
 print("Connected to container! Session ID: ", session.session_id)
@@ -49,5 +58,7 @@ try:
 except:
     pass
 
+time.sleep(120)
+
 # Write the Cassandra container logs to a file locally
-os.system('docker logs '+cassandra_container.name+' > /home/'+user+'/Desktop/14989_'+execution+'.log 2>&1')
+os.system('docker logs 14989_normal > /home/'+user+'/Desktop/14989_'+execution+'.log 2>&1')

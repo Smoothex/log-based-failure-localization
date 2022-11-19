@@ -2,7 +2,7 @@ import re
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '13346'  # or one of the other tickets
+bug_number = '14989'  # or one of the other tickets
 
 debugLogFailure = "/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log"
 debugLogNormal = "/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log"
@@ -134,6 +134,16 @@ with open(debugLogNormal, 'r+') as fp:
 
     # Completed flushing /home/<USER>/.ccm/13337_failure/node1/data0/system_schema/columns-24101c25a2ae3af787c1b40ee1aca33f/mc
     completedFlushing_regex = r'Completed flushing .*/mc'
+
+    # Generated random tokens. tokens are [...]
+    randomTokens_regex = r'Generated random tokens. tokens are \[.*\]'
+
+    # Only 62.813GiB free
+    freeGig_regex = r'Only [0-9]*\.[0-9]*GiB free'
+
+    # CompilerOracle: ...
+    # CompileCommand: ...
+    compile_regex = r'Compile(rOracle|Command): .*'
 
     log = re.sub(pattern=date_regex,
                  repl="<TIMESTAMP>",
@@ -272,6 +282,15 @@ with open(debugLogNormal, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=offHeap_regex,
                  repl="(<NUM>%) off-heap",
+                 string=log)
+    log = re.sub(pattern=randomTokens_regex,
+                 repl="Generated random tokens. tokens are [<TOKEN_IDs>]",
+                 string=log)
+    log = re.sub(pattern=freeGig_regex,
+                 repl="Only <NUM>GiB free",
+                 string=log)
+    log = re.sub(pattern=compile_regex,
+                 repl="<COMPILE_INFO>",
                  string=log)
 
     fp.seek(0)
