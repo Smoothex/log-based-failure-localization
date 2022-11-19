@@ -61,4 +61,4 @@ except:
 time.sleep(120)
 
 # Write the Cassandra container logs to a file locally
-os.system('docker logs 14989_normal > /home/'+user+'/Desktop/14989_'+execution+'.log 2>&1')
+os.system('docker logs '+cassandra_container.name+' > /home/'+user+'/Desktop/14989_'+execution+'.log 2>&1')
