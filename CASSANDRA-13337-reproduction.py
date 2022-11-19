@@ -8,7 +8,7 @@ https://issues.apache.org/jira/browse/CASSANDRA-13337
 """
 
 version = '3.0.12'  # 3.0.13 - normal execution / 3.0.12 - gives error
-execution = 'normal'  # alternatively 'failure'
+execution = 'normal'  # normal / failure
 
 # Start the container
 os.system('ccm create 13337_' + execution + ' -v ' + version + ' -n 1 -s')

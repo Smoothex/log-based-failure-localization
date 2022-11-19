@@ -2,7 +2,7 @@ import difflib
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '14989'  # or one of the other tickets
+bug_number = '11803'  # or one of the other tickets
 
 debugLogFailure = open("/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log").readlines()
 debugLogNormal = open("/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log").readlines()

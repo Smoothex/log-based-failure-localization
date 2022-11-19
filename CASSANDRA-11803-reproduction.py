@@ -9,8 +9,8 @@ https://issues.apache.org/jira/browse/CASSANDRA-11803
 """
 
 user = os.getenv("USER", default=None)
-version = '3.3'        # fixed in 3.10
-execution = 'failure'  # normal / failure
+version = '3.0.10'       # 3.0.10 - normal execution / 3.3 - gives error
+execution = 'normal'  # normal / failure
 container_name = 'cassandra' + version + '_' + execution
 
 client = docker.from_env()

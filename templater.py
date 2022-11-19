@@ -2,15 +2,15 @@ import re
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '14989'  # or one of the other tickets
+bug_number = '11803'  # or one of the other tickets
 
 debugLogFailure = "/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log"
 debugLogNormal = "/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log"
 
-with open(debugLogNormal, 'r+') as fp:
+with open(debugLogFailure, 'r+') as fp:
     log = fp.read()
     # 2022-07-14 17:24:51,916
-    date_regex = r'\d{4}\-\d{2}\-\d{2}\s+\d{1,2}\:\d{1,2}\:\d{1,2}\,\d{3}'
+    date_regex = r'(\d{4}\-\d{2}\-\d{2}\s)?\d{1,2}\:\d{1,2}\:\d{1,2}(\,\d{3})?'
 
     # home/[a-zA-Z0-9]/.ccm/test_python_failure/node2
     clusterName_regex = r'\/home\/[a-zA-Z0-9]{0,9}\/\.ccm\/.*/node2'  # using a star for any cluster name
@@ -34,8 +34,8 @@ with open(debugLogNormal, 'r+') as fp:
     # Classpath: .../..../..../....jar
     classpath_regex = r'Classpath: .*\.jar'
 
-    # CFMetaData@5a18cd76
-    cfmetadata_regex = r'CFMetaData\@.*\[.*\]'
+    # @5a18cd76[...]
+    cfmetadata_regex = r'CFMetaData\@.*\[.*\]\]'
 
     # token(s) [-107910199436536903, -1213662480926735592, -1221822647174710395,...,]
     tokens_regex = r'token(s?) \[.*\]'
@@ -107,7 +107,7 @@ with open(debugLogNormal, 'r+') as fp:
     hostname_regex = r'Hostname: .*'
 
     # apache-cassandra-3.11.11.jar:3.11.11
-    cassandraVersion_regex = r'apache-cassandra-[0-9]*\.[0-9]*\.[0-9]*\.jar:[0-9]*\.[0-9]*\.[0-9]*'
+    cassandraVersion_regex = r'apache-cassandra-[0-9]*\.[0-9]*(\.[0-9]*)?\.jar:[0-9]*\.[0-9]*(\.[0-9]*)?'
 
     # Cassandra version: 3.11.11
     cassandraVersion_regexSecond = r'Cassandra version: [0-9]*\.[0-9]*\.[0-9]*'
@@ -140,10 +140,20 @@ with open(debugLogNormal, 'r+') as fp:
 
     # Only 62.813GiB free
     freeGig_regex = r'Only [0-9]*\.[0-9]*GiB free'
+    freeMB_regex = r'Only [0-9]*(\.[0-9]*)? MB free'
 
     # CompilerOracle: ...
     # CompileCommand: ...
     compile_regex = r'Compile(rOracle|Command): .*'
+
+    # baseTableId
+    baseTableId_regex = r'baseTableId=[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+'
+
+    # ViewDefinition@6fbffeaf[
+    viewDefinition_regex = r'ViewDefinition\@[a-z0-9]+\['
+
+    # VM/1.8.0_72-internal
+    jvmVersion_regex = r'VM/.*'
 
     log = re.sub(pattern=date_regex,
                  repl="<TIMESTAMP>",
@@ -170,7 +180,7 @@ with open(debugLogNormal, 'r+') as fp:
                  repl="Classpath: <CLASSPATH>",
                  string=log)
     log = re.sub(pattern=cfmetadata_regex,
-                 repl="CFMetaData@<ID>[<METADATA>]",
+                 repl="CFMetaData@<ID>[<METADATA>]]",
                  string=log)
     log = re.sub(pattern=tokens_regex,
                  repl="tokens [<TOKEN_IDs>]",
@@ -289,8 +299,20 @@ with open(debugLogNormal, 'r+') as fp:
     log = re.sub(pattern=freeGig_regex,
                  repl="Only <NUM>GiB free",
                  string=log)
+    log = re.sub(pattern=freeMB_regex,
+                 repl="Only <NUM> MB free",
+                 string=log)
     log = re.sub(pattern=compile_regex,
                  repl="<COMPILE_INFO>",
+                 string=log)
+    log = re.sub(pattern=baseTableId_regex,
+                 repl="baseTableId=<ID>",
+                 string=log)
+    log = re.sub(pattern=viewDefinition_regex,
+                 repl="ViewDefinition@<ID>[",
+                 string=log)
+    log = re.sub(pattern=jvmVersion_regex,
+                 repl="VM/<VERSION>",
                  string=log)
 
     fp.seek(0)

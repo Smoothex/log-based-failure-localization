@@ -6,8 +6,8 @@ CASSANDRA-13346
 https://issues.apache.org/jira/browse/CASSANDRA-13346
 """
 
-version = '3.11.0'  # 3.11.0 - normal execution / 3.9 - gives error
-execution = 'normal'  # alternatively 'failure'
+version = '3.11.0'    # 3.11.0 - normal execution / 3.9 - gives error
+execution = 'normal'  # normal / failure
 
 # DON'T FORGET TO STOP THE NORMAL CLUSTER AFTER RUNNING THE SCRIPT WITH IT SO THAT THE PORTS ARE FREE FOR THE NEXT ONE
 

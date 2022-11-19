@@ -9,7 +9,7 @@ https://issues.apache.org/jira/browse/CASSANDRA-14989
 """
 
 user = os.getenv("USER", default=None)
-version = '4.0'     # normal in 4.0 / bug in 3.11.14
+version = '4.0'     # 4.0 - normal execution / 3.11.14 - gives error
 execution = 'normal'  # normal / failure
 container_name = 'cassandra' + version + '_' + execution
 
