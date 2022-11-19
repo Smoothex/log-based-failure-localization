@@ -1,0 +1,95 @@
+INFO  [main] <TIMESTAMP> RateBasedBackPressure.<JAVA_ID> - Initialized back-pressure with high ratio: 0.9, factor: 5, flow: FAST, window size: 2000.
+INFO  [main] <TIMESTAMP> DatabaseDescriptor.<JAVA_ID> - Back-pressure is disabled with strategy org.apache.cassandra.net.RateBasedBackPressure{high_ratio=0.9, factor=5, flow=FAST}.
+INFO  [main] <TIMESTAMP> CassandraDaemon.<JAVA_ID> - JVM vendor/version: OpenJDK 64-Bit Server VM/1.8.0_352
+INFO  [main] <TIMESTAMP> CassandraDaemon.<JAVA_ID> - Code Cache Non-heap memory: init = <NUM> used = <NUM> committed = <NUM> max = <NUM>
+INFO  [main] <TIMESTAMP> CassandraDaemon.<JAVA_ID> - Classpath: <CLASSPATH>
+WARN  [main] <TIMESTAMP> NativeLibrary.<JAVA_ID> - Unable to lock JVM memory (ENOMEM). This can result in part of the JVM being swapped out, especially with mmapped I/O enabled. Increase RLIMIT_MEMLOCK or run Cassandra as root.
+WARN  [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Directory /opt/cassandra/data/data doesn't exist
+WARN  [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Directory /opt/cassandra/data/commitlog doesn't exist
+WARN  [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Directory /opt/cassandra/data/saved_caches doesn't exist
+WARN  [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Directory /opt/cassandra/data/hints doesn't exist
+INFO  [main] <TIMESTAMP> QueryProcessor.<JAVA_ID> - Initialized prepared statement caches with 15 MB (native) and 15 MB (Thrift)
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.range_xfers
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.views_builds_in_progress
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.hints
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.batchlog
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_keyspaces
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_columnfamilies
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_columns
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_triggers
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_usertypes
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_functions
+INFO  [main] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Initializing system.schema_aggregates
+INFO  [main] <TIMESTAMP> ViewManager.<JAVA_ID> - Not submitting build tasks for views in keyspace system as storage service is not initialized
+INFO  [main] <TIMESTAMP> ApproximateTime.<JAVA_ID> - Scheduling approximate time-check task with a precision of 10 milliseconds
+INFO  [main] <TIMESTAMP> ViewManager.<JAVA_ID> - Not submitting build tasks for views in keyspace system_schema as storage service is not initialized
+INFO  [MemtableFlushWriter:1] <TIMESTAMP> CacheService.<JAVA_ID> - Initializing key cache with capacity of 100 MBs.
+INFO  [MemtableFlushWriter:1] <TIMESTAMP> CacheService.<JAVA_ID> - Initializing row cache with capacity of 0 MBs
+INFO  [MemtableFlushWriter:1] <TIMESTAMP> CacheService.<JAVA_ID> - Initializing counter cache with capacity of 50 MBs
+INFO  [MemtableFlushWriter:1] <TIMESTAMP> CacheService.<JAVA_ID> - Scheduling counter cache save to every 7200 seconds (going to save all keys).
+INFO  [CompactionExecutor:2] <TIMESTAMP> BufferPool.<JAVA_ID> - Global buffer pool is enabled, when pool is exhausted (max is <NUM>MiB) it will allocate on heap
+INFO  [pool-4-thread-1] <TIMESTAMP> AutoSavingCache.<JAVA_ID> - Completed loading (0 ms; 1 keys) KeyCache cache
+INFO  [main] <TIMESTAMP> StorageService.<JAVA_ID> - Thrift API version: 20.1.0
+INFO  [main] <TIMESTAMP> StorageService.<JAVA_ID> - CQL supported versions: 3.4.4 (default: 3.4.4)
+INFO  [main] <TIMESTAMP> StorageService.<JAVA_ID> - Native protocol supported versions: 3/v3, 4/v4, 5/v5-beta (default: 4/v4)
+INFO  [main] <TIMESTAMP> MessagingService.<JAVA_ID> - Starting Messaging Service on /172.17.0.2:7000 (eth0)
+INFO  [main] <TIMESTAMP> BootStrapper.<JAVA_ID> - Generated random tokens. tokens are [<TOKEN_IDs>]
+INFO  [MigrationStage:1] <TIMESTAMP> ViewManager.<JAVA_ID> - Not submitting build tasks for views in keyspace system_traces as storage service is not initialized
+INFO  [MigrationStage:1] <TIMESTAMP> ViewManager.<JAVA_ID> - Not submitting build tasks for views in keyspace system_distributed as storage service is not initialized
+INFO  [MigrationStage:1] <TIMESTAMP> ViewManager.<JAVA_ID> - Not submitting build tasks for views in keyspace system_auth as storage service is not initialized
+INFO  [main] <TIMESTAMP> Server.<JAVA_ID> - Using Netty Version: <NETTY_VERSIONS>
+INFO  [main] <TIMESTAMP> Server.<JAVA_ID> - Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
+INFO  [main] <TIMESTAMP> CassandraDaemon.<JAVA_ID> - Not starting RPC server as requested. Use JMX (StorageService->startRPCServer()) or nodetool (enablethrift) to start it
+WARN  [epollEventLoopGroup-2-4] <TIMESTAMP> NoSpamLogger.<JAVA_ID> - Protocol exception with client networking: org.apache.cassandra.transport.ProtocolException: Beta version of the protocol used (5/v5-beta), but USE_BETA flag is unset
+INFO  [Native-Transport-Requests-8] <TIMESTAMP> MigrationManager.<JAVA_ID> - Create new Keyspace: KeyspaceMetadata{name=k, params=KeyspaceParams{durable_writes=true, replication=ReplicationParams{class=org.apache.cassandra.locator.SimpleStrategy, replication_factor=1}}, tables=[], views=[], functions=[], types=[]}
+INFO  [Native-Transport-Requests-1] <TIMESTAMP> MigrationManager.<JAVA_ID> - Create new table: org.apache.cassandra.config.CFMetaData@<ID>[<METADATA>]
+ERROR [Native-Transport-Requests-6] <TIMESTAMP> QueryMessage.<JAVA_ID> - Unexpected error during query
+java.lang.NullPointerException: null
+	at org.apache.cassandra.db.marshal.CompositeType.build(CompositeType.<JAVA_ID>)
+	at org.apache.cassandra.db.marshal.CompositeType.build(CompositeType.<JAVA_ID>)
+	at org.apache.cassandra.config.CFMetaData.serializePartitionKey(CFMetaData.<JAVA_ID>)
+	at org.apache.cassandra.cql3.functions.TokenFct.execute(TokenFct.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.ScalarFunctionSelector.getOutput(ScalarFunctionSelector.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.Selection$SelectionWithProcessing$1.getOutputRow(Selection.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.Selection$ResultSetBuilder.getOutputRow(Selection.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.Selection$ResultSetBuilder.build(Selection.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.process(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.processResults(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.QueryProcessor.processStatement(QueryProcessor.<JAVA_ID>)
+	at org.apache.cassandra.cql3.QueryProcessor.process(QueryProcessor.<JAVA_ID>)
+	at org.apache.cassandra.cql3.QueryProcessor.process(QueryProcessor.<JAVA_ID>)
+	at org.apache.cassandra.transport.messages.QueryMessage.execute(QueryMessage.<JAVA_ID>)
+	at org.apache.cassandra.transport.Message$Dispatcher.processRequest(Message.<JAVA_ID>)
+	at org.apache.cassandra.transport.Message$Dispatcher.lambda$channelRead0$0(Message.<JAVA_ID>)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.<JAVA_ID>)
+	at org.apache.cassandra.concurrent.AbstractLocalAwareExecutorService$FutureTask.run(AbstractLocalAwareExecutorService.<JAVA_ID>)
+	at org.apache.cassandra.concurrent.SEPWorker.run(SEPWorker.<JAVA_ID>)
+	at java.lang.Thread.run(Thread.<JAVA_ID>)
+ERROR [Native-Transport-Requests-6] <TIMESTAMP> ErrorMessage.<JAVA_ID> - Unexpected exception during request
+java.lang.NullPointerException: null
+	at org.apache.cassandra.db.marshal.CompositeType.build(CompositeType.<JAVA_ID>)
+	at org.apache.cassandra.db.marshal.CompositeType.build(CompositeType.<JAVA_ID>)
+	at org.apache.cassandra.config.CFMetaData.serializePartitionKey(CFMetaData.<JAVA_ID>)
+	at org.apache.cassandra.cql3.functions.TokenFct.execute(TokenFct.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.ScalarFunctionSelector.getOutput(ScalarFunctionSelector.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.Selection$SelectionWithProcessing$1.getOutputRow(Selection.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.Selection$ResultSetBuilder.getOutputRow(Selection.<JAVA_ID>)
+	at org.apache.cassandra.cql3.selection.Selection$ResultSetBuilder.build(Selection.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.process(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.processResults(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>)
+	at org.apache.cassandra.cql3.QueryProcessor.processStatement(QueryProcessor.<JAVA_ID>)
+	at org.apache.cassandra.cql3.QueryProcessor.process(QueryProcessor.<JAVA_ID>)
+	at org.apache.cassandra.cql3.QueryProcessor.process(QueryProcessor.<JAVA_ID>)
+	at org.apache.cassandra.transport.messages.QueryMessage.execute(QueryMessage.<JAVA_ID>)
+	at org.apache.cassandra.transport.Message$Dispatcher.processRequest(Message.<JAVA_ID>)
+	at org.apache.cassandra.transport.Message$Dispatcher.lambda$channelRead0$0(Message.<JAVA_ID>)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.<JAVA_ID>)
+	at org.apache.cassandra.concurrent.AbstractLocalAwareExecutorService$FutureTask.run(AbstractLocalAwareExecutorService.<JAVA_ID>)
+	at org.apache.cassandra.concurrent.SEPWorker.run(SEPWorker.<JAVA_ID>)
+	at java.lang.Thread.run(Thread.<JAVA_ID>)
