@@ -1,0 +1,64 @@
+// Only difference here is the name of the cluster (in this case 13337_failure), which I have not parsed, so that it
+// is clear where these log entries come from. Hence, these log messages can be ignored when comparing 2 scenarios
+
+INFO  [main] <TIMESTAMP> YamlConfigurationLoader.<JAVA_ID> - Configuration location: file:/home/<USER>/.ccm/13337_failure/node1/conf/cassandra.yaml
+DEBUG [main] <TIMESTAMP> YamlConfigurationLoader.<JAVA_ID> - Loading settings from file:/home/<USER>/.ccm/13337_failure/node1/conf/cassandra.yaml
+DEBUG [main] <TIMESTAMP> YamlConfigurationLoader.<JAVA_ID> - Loading settings from file:/home/<USER>/.ccm/13337_failure/node1/conf/cassandra.yaml
+WARN  [main] <TIMESTAMP> CLibrary.<JAVA_ID> - Unable to lock JVM memory (ENOMEM). This can result in part of the JVM being swapped out, especially with mmapped I/O enabled. Increase RLIMIT_MEMLOCK or run Cassandra as root.
+DEBUG [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Checking directory /home/<USER>/.ccm/13337_failure/node1/data0
+DEBUG [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Checking directory /home/<USER>/.ccm/13337_failure/node1/commitlogs
+DEBUG [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Checking directory /home/<USER>/.ccm/13337_failure/node1/saved_caches
+DEBUG [main] <TIMESTAMP> StartupChecks.<JAVA_ID> - Checking directory /home/<USER>/.ccm/13337_failure/node1/hints
+DEBUG [main] <TIMESTAMP> YamlConfigurationLoader.<JAVA_ID> - Loading settings from file:/home/<USER>/.ccm/13337_failure/node1/conf/cassandra.yaml
+DEBUG [main] <TIMESTAMP> YamlConfigurationLoader.<JAVA_ID> - Loading settings from file:/home/<USER>/.ccm/13337_failure/node1/conf/cassandra.yaml
+
+// Differences begin here
+
+ERROR [SharedPool-Worker-<NUM>] <TIMESTAMP> Message.<JAVA_ID> - Unexpected exception during request; channel = [id: 0x5139d261, L:/127.0.0.1:9042 - R:/127.0.0.1:43110]
+java.io.IOError: java.io.IOException: Corrupt empty row found in unfiltered partition
+	at org.apache.cassandra.db.rows.UnfilteredRowIteratorSerializer$1.computeNext(UnfilteredRowIteratorSerializer.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.rows.UnfilteredRowIteratorSerializer$1.computeNext(UnfilteredRowIteratorSerializer.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.utils.AbstractIterator.hasNext(AbstractIterator.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.BaseRows.hasNext(BaseRows.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.FilteredRows.isEmpty(FilteredRows.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.Filter.closeIfEmpty(Filter.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.Filter.applyToPartition(Filter.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.Filter.applyToPartition(Filter.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.BasePartitions.hasNext(BasePartitions.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageProxy$SingleRangeResponse.computeNext(StorageProxy.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageProxy$SingleRangeResponse.computeNext(StorageProxy.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.utils.AbstractIterator.hasNext(AbstractIterator.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.BasePartitions.hasNext(BasePartitions.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageProxy$RangeCommandIterator.computeNext(StorageProxy.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageProxy$RangeCommandIterator.computeNext(StorageProxy.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.utils.AbstractIterator.hasNext(AbstractIterator.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.transform.BasePartitions.hasNext(BasePartitions.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.statements.SelectStatement.process(SelectStatement.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.statements.SelectStatement.processResults(SelectStatement.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.statements.SelectStatement.execute(SelectStatement.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.QueryProcessor.processStatement(QueryProcessor.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.QueryProcessor.process(QueryProcessor.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.cql3.QueryProcessor.process(QueryProcessor.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.transport.messages.QueryMessage.execute(QueryMessage.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.transport.Message$Dispatcher.channelRead0(Message.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.transport.Message$Dispatcher.channelRead0(Message.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.<JAVA_ID>) [netty-all-4.0.44.Final.jar:4.0.44.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.<JAVA_ID>) [netty-all-4.0.44.Final.jar:4.0.44.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.access$600(AbstractChannelHandlerContext.<JAVA_ID>) [netty-all-4.0.44.Final.jar:4.0.44.Final]
+	at io.netty.channel.AbstractChannelHandlerContext$7.run(AbstractChannelHandlerContext.<JAVA_ID>) [netty-all-4.0.44.Final.jar:4.0.44.Final]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.<JAVA_ID>) [na:1.8.0_352]
+	at org.apache.cassandra.concurrent.AbstractLocalAwareExecutorService$FutureTask.run(AbstractLocalAwareExecutorService.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.concurrent.SEPWorker.run(SEPWorker.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+	at java.lang.Thread.run(Thread.<JAVA_ID>) [na:1.8.0_352]
+Caused by: java.io.IOException: Corrupt empty row found in unfiltered partition
+	at org.apache.cassandra.db.rows.UnfilteredSerializer.deserialize(UnfilteredSerializer.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.db.rows.UnfilteredRowIteratorSerializer$1.computeNext(UnfilteredRowIteratorSerializer.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	... 35 common frames omitted
+INFO  [OptionalTasks:1] <TIMESTAMP> CassandraRoleManager.<JAVA_ID> - Created default superuser role 'cassandra'
+DEBUG [OptionalTasks:1] <TIMESTAMP> CassandraDaemon.<JAVA_ID> - Completed submission of build tasks for any materialized views defined at startup
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Enqueuing flush of roles: <NUM> (<NUM>%) on-heap, <NUM> (<NUM>%) off-heap
+DEBUG [MemtableFlushWriter:<NUM>] <TIMESTAMP> Memtable.<JAVA_ID> - Writing Memtable-roles@<ID>(<NUM>KiB serialized bytes, <NUM> ops, 0%/0% of on/off-heap limit)
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Enqueuing flush of size_estimates: <NUM> (<NUM>%) on-heap, <NUM> (<NUM>%) off-heap
+DEBUG [MemtableFlushWriter:<NUM>] <TIMESTAMP> Memtable.<JAVA_ID> - Writing Memtable-size_estimates@<ID>(<NUM>KiB serialized bytes, <NUM> ops, 0%/0% of on/off-heap limit)

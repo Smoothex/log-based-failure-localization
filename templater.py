@@ -2,10 +2,10 @@ import re
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '11803'  # or one of the other tickets
+bug_number = '13337'  # or one of the other tickets
 
-debugLogFailure = "/home/"+user+"/Desktop/"+bug_number+"_failure/debug.log"
-debugLogNormal = "/home/"+user+"/Desktop/"+bug_number+"_normal/debug.log"
+debugLogFailure = "/home/" + user + "/Desktop/" + bug_number + "_failure/debug.log"
+debugLogNormal = "/home/" + user + "/Desktop/" + bug_number + "_normal/debug.log"
 
 with open(debugLogFailure, 'r+') as fp:
     log = fp.read()
@@ -65,11 +65,11 @@ with open(debugLogFailure, 'r+') as fp:
     db_regex = r'm(e|d)-[0-9]+-big(-Data.db)?'
 
     # Compacting (3e27ae50-0c23-11ed-8cad-4304f9841101)
-    compacting_regex = r'Compacting \([a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\) \[.*/mc'
+    compacting_regex = r'Compacting \(.*\) \[.*\]'
     compacted_regex = r'Compacted \([a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\)'
 
     # in 59ms
-    time_regex = r'in \d{1,2}ms'
+    time_regex = r'in [0-9]+ms'
 
     # created 0858462d-89a5-441a-ab3e-9637e5b0109c
     created_regex = r'created [a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+\-[a-z0-9]+'
@@ -120,8 +120,7 @@ with open(debugLogFailure, 'r+') as fp:
 
     # : 1.616KiB (0%) on-heap, 0.000KiB (0%) off-heap
     # (0%) off-heap
-    onHeap_regex = r'\([0-9]*%\) on-heap'
-    offHeap_regex = r'\([0-9]*%\) off-heap'
+    onHeap_regex = r'[0-9]+ \([0-9]*%\) on-heap, [0-9]+ \([0-9]*%\) off-heap'
 
     # 326 bytes to 239 (~72% of original)
     compaction_regex = r'(([0-9]*?\,)?)[0-9]* bytes to (([0-9]*?\,)?)[0-9]* \(\~[0-9]*% of original\)'
@@ -133,7 +132,7 @@ with open(debugLogFailure, 'r+') as fp:
     compactedSSTablesTo_regex = r'sstables to \[.*\] to level='
 
     # Completed flushing /home/<USER>/.ccm/13337_failure/node1/data0/system_schema/columns-24101c25a2ae3af787c1b40ee1aca33f/mc
-    completedFlushing_regex = r'Completed flushing .*/mc'
+    completedFlushing_regex = r'Completed flushing .* \('
 
     # Generated random tokens. tokens are [...]
     randomTokens_regex = r'Generated random tokens. tokens are \[.*\]'
@@ -154,6 +153,18 @@ with open(debugLogFailure, 'r+') as fp:
 
     # VM/1.8.0_72-internal
     jvmVersion_regex = r'VM/.*'
+
+    # [CompactionExecutor:2]
+    threadNumber_regex = r'r:\d]'
+    threadNumber_regex2 = r'e:\d]'
+    threadNumber_regex3 = r'h:\d]'
+
+    # : 351 (
+    moreNumbers_regex = r': [0-9]+ \('
+
+    worker_regex = r'Worker-[0-9]+'
+
+    ops_regex = r', [0-9]+ ops,'
 
     log = re.sub(pattern=date_regex,
                  repl="<TIMESTAMP>",
@@ -207,13 +218,13 @@ with open(debugLogFailure, 'r+') as fp:
                  repl="<.db FILE>",
                  string=log)
     log = re.sub(pattern=compacting_regex,
-                 repl="Compacting (<ID>) [<PATH>/mc",
+                 repl="Compacting (<ID>) [<COMPACTED .db FILES>]",
                  string=log)
     log = re.sub(pattern=compacted_regex,
                  repl="Compacted (<ID>)",
                  string=log)
     log = re.sub(pattern=time_regex,
-                 repl="in <TIME>ms",
+                 repl="in <NUM>ms",
                  string=log)
     log = re.sub(pattern=created_regex,
                  repl="created <IP>",
@@ -285,13 +296,10 @@ with open(debugLogFailure, 'r+') as fp:
                  repl="sstables to [<PATH>] to level=",
                  string=log)
     log = re.sub(pattern=completedFlushing_regex,
-                 repl="Completed flushing <PATH>/mc",
+                 repl="Completed flushing [<COMPACTED .db FILES>] (",
                  string=log)
     log = re.sub(pattern=onHeap_regex,
-                 repl="(<NUM>%) on-heap",
-                 string=log)
-    log = re.sub(pattern=offHeap_regex,
-                 repl="(<NUM>%) off-heap",
+                 repl="<NUM> (<NUM>%) on-heap, <NUM> (<NUM>%) off-heap",
                  string=log)
     log = re.sub(pattern=randomTokens_regex,
                  repl="Generated random tokens. tokens are [<TOKEN_IDs>]",
@@ -313,6 +321,24 @@ with open(debugLogFailure, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=jvmVersion_regex,
                  repl="VM/<VERSION>",
+                 string=log)
+    log = re.sub(pattern=threadNumber_regex,
+                 repl="r:<NUM>]",
+                 string=log)
+    log = re.sub(pattern=threadNumber_regex2,
+                 repl="e:<NUM>]",
+                 string=log)
+    log = re.sub(pattern=threadNumber_regex3,
+                 repl="h:<NUM>]",
+                 string=log)
+    log = re.sub(pattern=moreNumbers_regex,
+                 repl=": <NUM> (",
+                 string=log)
+    log = re.sub(pattern=worker_regex,
+                 repl="Worker-<NUM>",
+                 string=log)
+    log = re.sub(pattern=ops_regex,
+                 repl=", <NUM> ops,",
                  string=log)
 
     fp.seek(0)
