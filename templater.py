@@ -2,7 +2,7 @@ import re
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '13337'  # or one of the other tickets
+bug_number = '16577'  # or one of the other tickets
 
 debugLogFailure = "/home/" + user + "/Desktop/" + bug_number + "_failure/debug.log"
 debugLogNormal = "/home/" + user + "/Desktop/" + bug_number + "_normal/debug.log"
@@ -179,7 +179,7 @@ with open(debugLogFailure, 'r+') as fp:
                  repl="<TOKEN_ID>",
                  string=log)
     log = re.sub(pattern=localRanges_regex,
-                 repl="Got local ranges <TOKEN_RANGES>",
+                 repl="ranges <TOKEN_RANGES>",
                  string=log)
     log = re.sub(pattern=KiB_regex,
                  repl="<NUM>KiB",
@@ -296,7 +296,7 @@ with open(debugLogFailure, 'r+') as fp:
                  repl="sstables to [<PATH>] to level=",
                  string=log)
     log = re.sub(pattern=completedFlushing_regex,
-                 repl="Completed flushing [<COMPACTED .db FILES>] (",
+                 repl="Completed flushing [<.db FILES>] (",
                  string=log)
     log = re.sub(pattern=onHeap_regex,
                  repl="<NUM> (<NUM>%) on-heap, <NUM> (<NUM>%) off-heap",
