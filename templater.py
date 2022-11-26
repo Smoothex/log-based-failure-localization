@@ -2,12 +2,12 @@ import re
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '16577'  # or one of the other tickets
+bug_number = '13346'  # or one of the other tickets
 
 debugLogFailure = "/home/" + user + "/Desktop/" + bug_number + "_failure/debug.log"
 debugLogNormal = "/home/" + user + "/Desktop/" + bug_number + "_normal/debug.log"
 
-with open(debugLogFailure, 'r+') as fp:
+with open(debugLogNormal, 'r+') as fp:
     log = fp.read()
     # 2022-07-14 17:24:51,916
     date_regex = r'(\d{4}\-\d{2}\-\d{2}\s)?\d{1,2}\:\d{1,2}\:\d{1,2}(\,\d{3})?'
@@ -123,7 +123,8 @@ with open(debugLogFailure, 'r+') as fp:
     onHeap_regex = r'[0-9]+ \([0-9]*%\) on-heap, [0-9]+ \([0-9]*%\) off-heap'
 
     # 326 bytes to 239 (~72% of original)
-    compaction_regex = r'(([0-9]*?\,)?)[0-9]* bytes to (([0-9]*?\,)?)[0-9]* \(\~[0-9]*% of original\)'
+    compactionInBytes_regex = r'(([0-9]*?\,)?)[0-9]* bytes to (([0-9]*?\,)?)[0-9]*'
+    compactionInKiB_regex = r'(([0-9]*?\,)?)[0-9]*KiB to (([0-9]*?\,)?)[0-9]*KiB'
 
     # 0.003999MB/s.
     speed_regex = r'[0-9]*\.[0-9]*MB/s\.'
@@ -165,6 +166,24 @@ with open(debugLogFailure, 'r+') as fp:
     worker_regex = r'Worker-[0-9]+'
 
     ops_regex = r', [0-9]+ ops,'
+
+    # Flushed to [BigTableReader(path='....')]
+    flushPath_regex = r'path=\'.*\''
+
+    checkingDirectory_regex = r'Checking directory \/.*\/node[0-9]+\/'
+
+    nativeTransportRequests_regex = r'Native-Transport-Requests-[0-9]+'
+    perDiskMemtable_regex = r'PerDiskMemtableFlushWriter_[0-9]+:[0-9]+'
+    configurationLocation_regex = r'file:.*\/cassandra.yaml'
+
+    # ~73% of original
+    ofOriginal_regex = r'\~[0-9]*\% of original'
+
+    # Row Throughput = ~41/s
+    rowThroughput_regex = r'Row Throughput = \~[0-9]*\/s'
+
+    # ReadStage-4
+    readStage_regex = r'ReadStage-[0-9]+'
 
     log = re.sub(pattern=date_regex,
                  repl="<TIMESTAMP>",
@@ -286,8 +305,11 @@ with open(debugLogFailure, 'r+') as fp:
     log = re.sub(pattern=user_regex,
                  repl="/home/<USER>/.ccm/",
                  string=log)
-    log = re.sub(pattern=compaction_regex,
-                 repl="<NUM> bytes to <NUM> (~<NUM>% of original)",
+    log = re.sub(pattern=compactionInBytes_regex,
+                 repl="<NUM> bytes to <NUM>",
+                 string=log)
+    log = re.sub(pattern=compactionInKiB_regex,
+                 repl="<NUM>KiB to <NUM>KiB",
                  string=log)
     log = re.sub(pattern=speed_regex,
                  repl="<NUM>MB/s.",
@@ -339,6 +361,30 @@ with open(debugLogFailure, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=ops_regex,
                  repl=", <NUM> ops,",
+                 string=log)
+    log = re.sub(pattern=flushPath_regex,
+                 repl="path= <PATH>",
+                 string=log)
+    log = re.sub(pattern=checkingDirectory_regex,
+                 repl="Checking directory <PATH>/",
+                 string=log)
+    log = re.sub(pattern=nativeTransportRequests_regex,
+                 repl="Native-Transport-Requests-<NUM>",
+                 string=log)
+    log = re.sub(pattern=perDiskMemtable_regex,
+                 repl="PerDiskMemtableFlushWriter_<NUM>:<NUM>",
+                 string=log)
+    log = re.sub(pattern=configurationLocation_regex,
+                 repl="file:<PATH>/cassandra.yaml",
+                 string=log)
+    log = re.sub(pattern=ofOriginal_regex,
+                 repl="~<NUM>% of original",
+                 string=log)
+    log = re.sub(pattern=rowThroughput_regex,
+                 repl="Row Throughput = ~<NUM>/s",
+                 string=log)
+    log = re.sub(pattern=readStage_regex,
+                 repl="ReadStage-<NUM>",
                  string=log)
 
     fp.seek(0)
