@@ -401,7 +401,7 @@ with open(debugLogFailure, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=expireTime_regex,
                  repl=r"adding expire time for endpoint : /127.0.0.\1 (<NUM>)",  # prefix the string with "r"
-                                                                                 # so that the backlash isn't treated as
+                                                                                 # so that \ isn't treated as
                                                                                  # an escape character
                  string=log)
 
