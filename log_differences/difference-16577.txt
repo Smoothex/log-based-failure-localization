@@ -1,0 +1,29 @@
+// PROPAGATED EFFECTS
+
+DEBUG [GossipStage:<NUM>] <TIMESTAMP> MigrationCoordinator.<JAVA_ID> - Not pulling schema from /127.0.0.3 because their messaging version is unknown
+DEBUG [OptionalTasks:1] <TIMESTAMP> SizeEstimatesRecorder.<JAVA_ID> - Node is not part of the ring; not recording size estimates
+WARN  [main] <TIMESTAMP> StorageService.<JAVA_ID> - There are nodes in the cluster with a different schema version than us we did not merged schemas from, our version : (8a56ef5e-53b5-3622-8fcd-2afd1bf77ebf), outstanding versions -> endpoints : {e84b6a60-24cf-30ca-9b58-452d92911703=[/127.0.0.3]}
+
+// FAILURE
+
+ERROR [main] <TIMESTAMP> CassandraDaemon.<JAVA_ID> - Exception encountered during startup
+java.lang.RuntimeException: Didn't receive schemas for all known versions within the timeout
+	at org.apache.cassandra.service.StorageService.waitForSchema(StorageService.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.dht.BootStrapper.allocateTokens(BootStrapper.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.dht.BootStrapper.getBootstrapTokens(BootStrapper.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageService.joinTokenRing(StorageService.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageService.initServer(StorageService.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.StorageService.initServer(StorageService.<JAVA_ID>) ~[apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.CassandraDaemon.setup(CassandraDaemon.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.CassandraDaemon.activate(CassandraDaemon.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+	at org.apache.cassandra.service.CassandraDaemon.main(CassandraDaemon.<JAVA_ID>) [apache-cassandra-<VERSION>.jar:<VERSION>]
+
+// PROPAGATED EFFECTS (as the events happen in a different thread dedicated to shutting down a node)
+
+WARN  [StorageServiceShutdownHook] <TIMESTAMP> Gossiper.<JAVA_ID> - No local state, state is in silent shutdown, or node hasn't joined, not announcing shutdown
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - Enqueuing flush of local: <NUM>KiB (0%) on-heap, <NUM>KiB (0%) off-heap
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> CompactionStrategyManager.<JAVA_ID> - Recreating compaction strategy - disk boundaries are out of date for system.local.
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> DiskBoundaryManager.<JAVA_ID> - Refreshing disk boundary cache for system.local
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> DiskBoundaryManager.<JAVA_ID> - Updating boundaries from DiskBoundaries{directories=[DataDirectory{location=<DIR>/data0}], positions=[max(9223372036854775807)], ringVersion=<NUM>, directoriesVersion=0} for system.local
+DEBUG [MemtablePostFlush:<NUM>] <TIMESTAMP> ColumnFamilyStore.<JAVA_ID> - forceFlush requested but everything is clean in peers
+DEBUG [StorageServiceShutdownHook] <TIMESTAMP> AbstractCommitLogSegmentManager.<JAVA_ID> - Segment CommitLogSegment(<DIR>/commitlogs/CommitLog-6-1669667187345.log) is no longer active and will be deleted now

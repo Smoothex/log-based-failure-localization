@@ -6,8 +6,10 @@ CASSANDRA-16577
 https://issues.apache.org/jira/browse/CASSANDRA-16577
 """
 
+"WARNING: You need Java 8 JDK 8u321 for this test case! JDK 8u331 does not work!"
+
 version = '3.11.10'  # 3.11.11 - normal execution / 3.11.10 - gives error
-execution = 'normal'  # alternatively 'failure'
+execution = 'failure'  # normal / failure
 
 # DON'T FORGET TO STOP THE NORMAL CLUSTER AFTER RUNNING THE SCRIPT WITH IT SO THAT THE PORTS ARE FREE FOR THE NEXT ONE
 

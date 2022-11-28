@@ -2,12 +2,12 @@ import re
 import os
 
 user = os.getenv("USER", default=None)
-bug_number = '13346'  # or one of the other tickets
+bug_number = '16577'  # or one of the other tickets
 
 debugLogFailure = "/home/" + user + "/Desktop/" + bug_number + "_failure/debug.log"
 debugLogNormal = "/home/" + user + "/Desktop/" + bug_number + "_normal/debug.log"
 
-with open(debugLogNormal, 'r+') as fp:
+with open(debugLogFailure, 'r+') as fp:
     log = fp.read()
     # 2022-07-14 17:24:51,916
     date_regex = r'(\d{4}\-\d{2}\-\d{2}\s)?\d{1,2}\:\d{1,2}\:\d{1,2}(\,\d{3})?'
@@ -184,6 +184,13 @@ with open(debugLogNormal, 'r+') as fp:
 
     # ReadStage-4
     readStage_regex = r'ReadStage-[0-9]+'
+
+    ringVersion_regex = r'ringVersion( )?=( )?[0-9]+'
+
+    completedLoading_regex = r'Completed loading \([0-9]* ms; [0-9]* keys\)'
+
+    # adding expire time for endpoint : \/127.0.0.[0-9]+ ([0-9]+)'
+    expireTime_regex = r'adding expire time for endpoint : \/127\.0\.0\.([0-9]+) \([0-9]+\)'
 
     log = re.sub(pattern=date_regex,
                  repl="<TIMESTAMP>",
@@ -385,6 +392,17 @@ with open(debugLogNormal, 'r+') as fp:
                  string=log)
     log = re.sub(pattern=readStage_regex,
                  repl="ReadStage-<NUM>",
+                 string=log)
+    log = re.sub(pattern=ringVersion_regex,
+                 repl="ringVersion=<NUM>",
+                 string=log)
+    log = re.sub(pattern=completedLoading_regex,
+                 repl="Completed loading (<NUM> ms; <NUM> keys)",
+                 string=log)
+    log = re.sub(pattern=expireTime_regex,
+                 repl=r"adding expire time for endpoint : /127.0.0.\1 (<NUM>)",  # prefix the string with "r"
+                                                                                 # so that the backlash isn't treated as
+                                                                                 # an escape character
                  string=log)
 
     fp.seek(0)
